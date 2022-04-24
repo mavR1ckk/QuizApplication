@@ -1,0 +1,55 @@
+package com.exam;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.exam.models.Role;
+import com.exam.models.User;
+import com.exam.models.UserRole;
+import com.exam.service.UserService;
+
+@SpringBootApplication
+public class QuizManagerBackendApplication implements CommandLineRunner {
+
+	public static void main(String[] args) {
+		SpringApplication.run(QuizManagerBackendApplication.class, args);
+	}
+
+	@Autowired
+	private UserService userService;
+
+	@Override
+	public void run(String... args) throws Exception {
+		User user = new User();
+		user.setEmail("Abhinatj@gmail");
+		user.setEnabled(true);
+		user.setFirstName("Abhinath");
+		user.setLastName("Jadhav");
+		user.setPassword("mh50k3320");
+		user.setPhone("9503698655");
+		user.setUserName("mavRickk");
+
+		user.setProfile("defalut.png");
+
+		Role role = new Role();
+		role.setRoleId(44l);
+		role.setRoleName("Normal User");
+
+		Set<UserRole> roles = new HashSet<>();
+
+		UserRole userRole = new UserRole();
+		userRole.setRole(role);
+		userRole.setUser(user);
+
+		roles.add(userRole);
+
+		userService.createUser(user, roles);
+
+	}
+
+}

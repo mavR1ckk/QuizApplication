@@ -1,0 +1,51 @@
+package com.exam.service.impl;
+
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.exam.models.User;
+import com.exam.models.UserRole;
+import com.exam.repo.RoleRepository;
+import com.exam.repo.UserRepository;
+import com.exam.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	
+	//Creating user
+	@Override
+	public User createUser(User user, Set<UserRole> userRoles) {
+
+		User local = this.userRepository.findByUserName(user.getUserName());
+
+		// To check user is already present in database
+		if (local != null) {
+			System.out.println("User is already present");
+			throw new RuntimeException("User is already present");
+		} else {
+
+			// to store the role if not available in database
+			userRoles.forEach(role -> {
+				roleRepository.save(role.getRole());
+			});
+
+			// To store the user roles in user
+			user.getUserRoles().addAll(userRoles);
+
+			// Save user in database
+			local = userRepository.save(user);
+
+		}
+		return local;
+	}
+
+}

@@ -1,0 +1,10 @@
+package com.exam.models;
+
+public class UserRole {
+	
+	private long userRoleId;
+	
+	
+	
+
+}
